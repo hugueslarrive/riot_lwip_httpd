@@ -1,0 +1,2 @@
+CFLAGS += '-DESP_WIFI_SSID="MySSID"'
+CFLAGS += '-DESP_WIFI_PASS="MyPassphrase"'

@@ -1,0 +1,42 @@
+From b9fce229030648f98b3b1c66c3cb9ab3d79136a0 Mon Sep 17 00:00:00 2001
+From: Hugues Larrive <hlarrive@pm.me>
+Date: Mon, 16 Aug 2021 04:37:13 +0200
+Subject: [PATCH] Enable apps/http and add httpd_init(); into tcpip_thread()
+
+---
+ src/api/tcpip.c        | 3 +++
+ src/apps/http/Makefile | 1 +
+ 2 files changed, 4 insertions(+)
+ create mode 100644 src/apps/http/Makefile
+
+diff --git a/src/api/tcpip.c b/src/api/tcpip.c
+index 743553a5..191b5ec5 100644
+--- a/src/api/tcpip.c
++++ b/src/api/tcpip.c
+@@ -49,6 +49,7 @@
+ #include "lwip/pbuf.h"
+ #include "lwip/etharp.h"
+ #include "netif/ethernet.h"
++#include "lwip/apps/httpd.h"
+ 
+ #define TCPIP_MSG_VAR_REF(name)     API_VAR_REF(name)
+ #define TCPIP_MSG_VAR_DECLARE(name) API_VAR_DECLARE(struct tcpip_msg, name)
+@@ -136,6 +137,8 @@ tcpip_thread(void *arg)
+     tcpip_init_done(tcpip_init_done_arg);
+   }
+ 
++  httpd_init();
++
+   while (1) {                          /* MAIN Loop */
+     LWIP_TCPIP_THREAD_ALIVE();
+     /* wait for a message, timeouts are processed while waiting */
+diff --git a/src/apps/http/Makefile b/src/apps/http/Makefile
+new file mode 100644
+index 00000000..48422e90
+--- /dev/null
++++ b/src/apps/http/Makefile
+@@ -0,0 +1 @@
++include $(RIOTBASE)/Makefile.base
+-- 
+2.20.1
+
